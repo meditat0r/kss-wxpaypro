@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/ksd.css"/>
+</head>
+<body>
+<div id="app">
+    <div id="courseListBox" class="course_bdleft course-block  Mtp25">
+        <div class="text-center mt-5">
+            <h1 class="fz32 fw">学相伴微信支付V3-Native系列</h1>
+            <input type="hidden" ref="course" value="${course.courseid}" id="courseid">
+            <img src="/weixinpay?courseid=${course.courseid}" width="250" alt="">
+            <h3>你购买的课程是：${course.title}，价格是：￥${course.price}</h3>
+            <p>已经等待了:{{count}}次</p>
+        </div>
+    </div>
+</div>
+<script src="/js/vue.min.js"></script>
+<script src="/js/axios.min.js"></script>
+<script>
+    var vue = new Vue({
+        el: "#app",
+        data: {
+            courseid: "",
+            count:5
+        },
+        created: function () {
+            this.courseid = document.getElementById("courseid").value;
+            // 1： 轮询监听用户是否支付成功!
+            this.intervalcallback();
+        },
+
+        methods: {
+            // 1 : 用户支付成功回调监听
+            listenerCallback: function () {
+                var that = this;
+                if(that.count<=0){
+                    alert("支付超时");
+                    window.location.href = window.location.href;
+                    return;
+                }
+                that.count--;
+                axios.get("/api/paySuccess?courseid=" + this.courseid).then(function (res) {
+                    if(res.data.code == 20000){
+                        if (that.timer) clearInterval(that.timer);
+                        alert("支付成功!!");
+                    }
+                });
+            },
+
+            intervalcallback: function () {
+                var that = this;
+                if (that.timer) clearInterval(that.timer);
+                that.timer = setInterval(this.listenerCallback, 3000);
+            }
+        }
+    })
+
+</script>
+</body>
+</html>

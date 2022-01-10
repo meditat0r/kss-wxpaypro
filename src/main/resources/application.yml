@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active: prod
+  freemarker:
+    suffix: .html
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    locale: zh_CN
+    generator:
+      write-numbers-as-strings: true
+      write-bigdecimal-as-plain: true

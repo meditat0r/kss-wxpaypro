@@ -1,0 +1,46 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/weixindb?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: mkxiaoer
+    hikari:
+      connection-timeout: 60000
+      validation-timeout: 3000
+      idle-timeout: 60000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 100
+      minimum-idle: 10
+      read-only: false
+logging:
+  level:
+    root: debug
+
+########################微信支付参数#######################################
+#微信商户号
+wechat:
+  mchId: 1370687602
+  #商家API证书序列号
+  mchSerialNo: 160C30064405BDB2F12FFD30EF759ABC56D5E48C
+  #商户在微信公众平台申请服务号对应的APPID
+  appId: wx2f823cdc8dfba815
+  #回调报文解密V3密钥key
+  v3Key: 0139a6d9e93fb88d3d68e0a8a1b06bd6
+  #微信获取平台证书列表地址
+  certificates:
+    url: https://api.mch.weixin.qq.com/v3/certificates
+  #微信统一下单Navtive的API地址，用于二维码支付
+  unifiedOrder:
+    url: https://api.mch.weixin.qq.com/v3/pay/transactions/native
+  #异步接收微信支付结果通知的回调地址
+  callback: http://api.kuangstudy.com/api/pay/callback
+  # 二维码logo
+  logo: classpath:favicon.png
+  #商户证书私钥路径
+  key:
+    path: D:/1370687602_20210504_cert/apiclient_key.pem
+###########################################################################
