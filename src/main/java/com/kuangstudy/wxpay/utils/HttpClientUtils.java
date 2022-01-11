@@ -13,21 +13,17 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.conn.ssl.TrustStrategy;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.util.StringUtils;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.security.GeneralSecurityException;
@@ -199,9 +195,6 @@ public class HttpClientUtils {
 		}
 	}
 
-
-
-
 	/**
 	 * 发送一个 GET 请求
 	 *
@@ -253,7 +246,6 @@ public class HttpClientUtils {
 		return result;
 	}
 
-
 	/**
 	 * 从 response 里获取 charset
 	 *
@@ -272,8 +264,6 @@ public class HttpClientUtils {
 		return null;
 	}
 
-
-
 	/**
 	 * 创建 SSL连接
 	 * @return
@@ -282,33 +272,18 @@ public class HttpClientUtils {
 	private CloseableHttpClient createSSLInsecureClient() throws GeneralSecurityException {
 		try {
 			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
-				public boolean isTrusted(X509Certificate[] chain,String authType) throws CertificateException {
+				@Override
+				public boolean isTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 					return true;
 				}
 			}).build();
 
-			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, new X509HostnameVerifier() {
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext, new HostnameVerifier() {
 
 				@Override
-				public boolean verify(String arg0, SSLSession arg1) {
-					return true;
+				public boolean verify(String s, SSLSession sslSession) {
+					return false;
 				}
-
-				@Override
-				public void verify(String host, SSLSocket ssl)
-						throws IOException {
-				}
-
-				@Override
-				public void verify(String host, X509Certificate cert)
-						throws SSLException {
-				}
-
-				@Override
-				public void verify(String host, String[] cns,
-								   String[] subjectAlts) throws SSLException {
-				}
-
 			});
 
 			return HttpClients.custom().setSSLSocketFactory(sslsf).build();

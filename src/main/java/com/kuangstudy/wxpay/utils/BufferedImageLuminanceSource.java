@@ -28,7 +28,8 @@ public class BufferedImageLuminanceSource extends LuminanceSource {
 		for (int y = top; y < top + height; y++) {
 			for (int x = left; x < left + width; x++) {
 				if ((image.getRGB(x, y) & 0xFF000000) == 0) {
-					image.setRGB(x, y, 0xFFFFFFFF); // = white
+					// = white
+					image.setRGB(x, y, 0xFFFFFFFF);
 				}
 			}
 		}
