@@ -2,8 +2,6 @@ package com.kuangstudy.wxpay.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.kuangstudy.wxpay.common.KsdStaticParameter;
 import com.kuangstudy.wxpay.entity.Course;
 import com.kuangstudy.wxpay.entity.UserPay;
@@ -12,7 +10,6 @@ import com.kuangstudy.wxpay.service.UserPayService;
 import com.kuangstudy.wxpay.utils.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
@@ -32,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @Log4j2
-public class WeixinNavtiveController {
+public class WeixinNativeController {
 
     @Autowired
     CourseService courseService;
@@ -47,9 +44,13 @@ public class WeixinNavtiveController {
     @RequestMapping("/weixinpay")
     @ResponseBody
     public byte[] weixinpay(String courseid, HttpServletResponse response) throws JsonProcessingException {
-        if (StringUtils.isEmpty(courseid)) return null;
+        if (StringUtils.isEmpty(courseid)) {
+            return null;
+        }
         Course course = courseService.getById(courseid);
-        if (course == null) return null;
+        if (course == null) {
+            return null;
+        }
         //1:封装请求参数
         Map<String, Object> map = new HashMap();
         map.put("mchid", KsdStaticParameter.mchId);
@@ -79,6 +80,7 @@ public class WeixinNavtiveController {
         // 3:请求统一微信native下单接口
         Map<String, Object> stringObjectMap = HttpUtils.doPost(KsdStaticParameter.unifiedOrderUrl, body);
 
+        // 微信支付返回的地址
         String codeUrl = stringObjectMap.get("code_url").toString();
         //生成二维码配置
         try {

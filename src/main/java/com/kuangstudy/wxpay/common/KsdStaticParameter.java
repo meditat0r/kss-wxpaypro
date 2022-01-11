@@ -54,7 +54,9 @@ public class KsdStaticParameter {
      * 微信商家api序列号
      */
     public static String mchSerialNo;
-    // 定义全局容器 保存微信平台证书公钥
+    /**
+     * 定义全局容器 保存微信平台证书公钥
+     */
     public static Map<String, X509Certificate> certificateMap = new ConcurrentHashMap<>();
 
     public static void certificateMap(String serialNo) {

@@ -55,7 +55,7 @@ public class WechatPayConfig implements CommandLineRunner {
     @Value("${wechat.logo}")
     private String logo;
 
-    /*springboot启动的时候回来加载run方法*/
+    /**springboot启动的时候会来加载run方法*/
     @Override
     public void run(String... args) throws Exception {
         //微信支付
@@ -70,6 +70,7 @@ public class WechatPayConfig implements CommandLineRunner {
         //加载商户私钥
         KsdStaticParameter.privateKey = WechatPayUtils.getPrivateKey(wechatKeyPath);
         //获取平台证书
+        // (作为校验，可省略),签名信息已经放在了HttpUtils发起微信支付请求时的请求头中
         //KsdStaticParameter.certificateMap = WechatPayUtils.refreshCertificate();
     }
 }
