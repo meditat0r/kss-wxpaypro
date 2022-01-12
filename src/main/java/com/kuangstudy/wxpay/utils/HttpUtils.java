@@ -74,6 +74,7 @@ public class HttpUtils {
             }
             StringEntity stringEntity = new StringEntity(body,"utf-8");
             httpPost.setEntity(stringEntity);
+            // 执行支付请求
             CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
 

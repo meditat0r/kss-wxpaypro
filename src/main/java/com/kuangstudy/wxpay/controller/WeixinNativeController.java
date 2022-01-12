@@ -150,7 +150,7 @@ public class WeixinNativeController {
                 // 附属参数
                 String attach = jsonData.get("attach").toString();
                 //TODO 根据订单号查询支付状态，如果未支付，更新支付状态 为已支付
-                log.info("3----------->微信支付成功,支付流水号是：{},附属参数是：{}", out_trade_no, attach);
+                log.info("3----------->微信支付成功,交易单号是：{},附属参数是：{}", out_trade_no, attach);
                 log.info("4----------->微信支付成功,支付流水号是：{},{}", transaction_id);
                 // 把附属参数转换成map
                 HashMap<String,Object> hashMap = JsonUtil.string2Obj(attach, HashMap.class);
