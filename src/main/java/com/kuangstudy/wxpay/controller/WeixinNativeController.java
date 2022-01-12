@@ -44,7 +44,7 @@ public class WeixinNativeController {
     @RequestMapping("/weixinpay")
     @ResponseBody
     public byte[] weixinpay(String courseid, HttpServletResponse response) throws JsonProcessingException {
-        if (StringUtils.isEmpty(courseid)) {
+        if (!StringUtils.hasText(courseid)) {
             return null;
         }
         Course course = courseService.getById(courseid);
